@@ -1,0 +1,192 @@
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (min-width : 320px)
+and (max-width : 414px){
+	#main-heading {
+		font-size: 34px;
+	}
+	#sub-heading {
+		font-size: 8.5px;
+	}
+
+	.poll-name {
+		font-size: 17px;	
+	}
+
+	.poll-time {
+		font-size: 14px;
+	}
+
+	.votes {
+		font-size: 14px;
+	}
+
+	.poll-description {
+		font-size: 16px;
+	}
+
+	.navbar {
+		padding: 8px 15px;
+	}
+
+	#site-header ul li {
+		display: inline-block;
+		width: 100%;
+		text-align: left;
+		margin-left: -10px;
+	}
+
+	#site-header {
+		text-align: left;
+	}
+
+	#users-table tr td{
+		border:solid 1px #eee;
+		border-collapse: collapse;
+	}
+
+	#users-table {
+		border-collapse: collapse;
+	}
+
+	#section {
+		width: 202px;
+	}
+
+	#filterSection {
+		margin-top: 30px;
+	}
+
+	.poll .actions {
+		position: relative;
+		padding: 10px;
+		margin-top: 20px;
+	}
+
+	.poll .actions .btn {
+		font-size: 16px;
+	}
+
+	.csv {
+		font-size: 12px;
+		margin-top: 15px;
+	}
+
+	.choice-row p {
+		margin: 0;
+		margin-top: 10px;
+	}
+
+	.choice-row .col-md-8 {
+		width: 70%;
+	}
+
+	.choice-row .col-md-4 {
+		width: 30%;
+	}
+
+	.choice-row .col-md-9 {
+		width: 70%;
+	}
+
+	.choice-row .col-md-3 {
+		width: 30%;
+	}
+
+	div.options > label {
+		width: 80px;
+	}
+
+	.choice-name {
+		font-size: 14px;
+	}
+
+	.img-wrapper {
+		width: 90px;
+		height: 70px;
+	}
+
+	.choice-title h3{
+		font-size: 16px;
+	}
+	.img-wrapper img {
+		width: 90px;
+		height: 70px;
+	}
+
+	.tableexport-caption {
+		position: relative !important;
+		display: none;
+	}
+
+
+
+	.btn {
+		font-size: 14px;
+	}
+
+	.site-footer p {
+		font-size: 12px;
+		padding: 10px;
+	}
+
+	
+	
+
+
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+/* Styles */
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}
