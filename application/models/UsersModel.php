@@ -60,7 +60,7 @@ class UsersModel extends CI_Model {
 
 		if ($query->num_rows() ) {
 			
-			$hash_pwd = $query->row()->password;
+			$hash_pwd = strtolower($query->row()->password);
 
 			if ($hash_pwd == strtolower( $this->input->post('password') ) ) 
 

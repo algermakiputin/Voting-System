@@ -19,8 +19,8 @@
                         <img src="<?php echo base_url(); ?>Assets/images/logo.png">
                     </td>
                     <td>
-                        <span id="main-heading">Precious</span><br>
-                        <span id="sub-heading">International School Of Davao - Voting System</span>
+                        <span id="main-heading">E-Voting</span><br>
+                        <span id="sub-heading">School Election Voting System</span>
                     </td>
                 </tr>
             </table>
