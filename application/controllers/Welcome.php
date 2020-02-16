@@ -83,7 +83,8 @@ class Welcome extends CI_Controller {
 				$ended = true;
 			} 
 			
-			$output .= "
+			$type =  $poll->private ? "Private" : "Public";
+			$output .= " 
 			<div class='poll poll-home' id='poll-$poll->id'>
 				<div class='poll-content'>
 					<div class='poll-name'>
@@ -91,6 +92,10 @@ class Welcome extends CI_Controller {
 					</div>
 					<div class='poll-desctipion'>
 						 $poll->tag_line
+						 <div>
+						  Type: $type
+						 </div>
+
 					</div>
 					<div class='poll-summary'>
 			";
@@ -142,13 +147,24 @@ class Welcome extends CI_Controller {
 				<div class='actions'>
 					
 			";
-					
-							
+					 	
 			if (!$this->session->userdata('staff')) {
 				if (!$ended) {
 					if (!in_array($poll->id, $voted)){
 						
-						$output .= "<a class='btn btn-info view' data='$poll->id'>VOTE</a>";
+						$can_vote = $this->db->where('user_id', $this->session->userdata('id'))
+																				->where('poll_id', $poll->id)
+																				->get('private_allowed_users')
+																				->num_rows();
+
+						if (!$poll->private) {
+							$output .= "<a class='btn btn-info view' data='$poll->id'>VOTE</a>";
+						}else {
+
+							if ($poll->private && $can_vote) {
+								$output .= "<a class='btn btn-info view' data='$poll->id'>VOTE</a>";
+							}
+						}
 						
 					}
 				}
@@ -195,8 +211,7 @@ class Welcome extends CI_Controller {
 		echo $output;
 	}
 
-
-	
+ 
 }	
 
 ?>

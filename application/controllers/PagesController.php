@@ -6,11 +6,12 @@ class PagesController extends CI_Controller {
 
 	public function register()
 	{
+		
 		if (!$this->session->userdata['staff']) {
 			redirect(base_url());
 		}
 
-		 $this->load->view('pages/register');
+		$this->load->view('pages/register');
 
 
 	}

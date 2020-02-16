@@ -130,8 +130,7 @@ class PollModel extends CI_Model {
 				);
 
 				$this->db->insert('group_choices', $data);
-
-				
+  
 			}
 
 			$counter++;

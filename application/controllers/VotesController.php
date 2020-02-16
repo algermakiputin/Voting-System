@@ -8,6 +8,7 @@ class VotesController extends CI_Controller {
 		$groups[] = $this->input->post('group_id');
 		$choices[] = $this->input->post('choices_id');
 		$poll_id = $this->input->post('poll_id');
+ 		 
 		
 		$this->load->model('VotesModel');
 		

@@ -60,6 +60,9 @@
 								</div>
 								<div class="poll-desctipion">
 									<?php echo $poll->tag_line; ?>
+									<div>
+										Type: <?php echo $poll->private ? "Private" : "Public" ?>
+									</div>
 								</div>
 								<div class="poll-summary">
 									<?php
@@ -106,8 +109,22 @@
 										if (!$this->session->userdata('staff')) {
 											if (!$ended) {
 												if (!in_array($poll->id, $voted)){
+
+													$can_vote = $this->db->where('user_id', $this->session->userdata('id'))
+																				->where('poll_id', $poll->id)
+																				->get('private_allowed_users')
+																				->num_rows();
+
 													?>
-													<a class="btn btn-info view" data="<?php echo $poll->id ?>">VOTE</a>
+												 	<?php if (!$poll->private) : ?>
+														<a class="btn btn-info view" data="<?php echo $poll->id ?>">VOTE</a>
+
+													<?php else: ?>
+														<?php if ($poll->private && $can_vote): ?>
+
+															<a class="btn btn-info view" data="<?php echo $poll->id ?>">VOTE</a>
+														<?php endif; ?>
+													<?php endif ?>
 
 													<?php
 												}
@@ -150,7 +167,7 @@
 						<div class="poll poll-home" >
 							<div class="poll-content">
 								
-									<p>No active poll At the moment....</p>	
+									<p>No active election at the moment....</p>	
 							
 								
 							</div>

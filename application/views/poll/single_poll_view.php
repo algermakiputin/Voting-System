@@ -71,8 +71,7 @@
 		<tr>
 			<th>ID</th>
 			<th>Name</th>
-			<th>Username</th>
-			<th>Action</th>
+			<th>Username</th> 
 		</tr>
 	</thead>
 	<tbody> 
@@ -80,8 +79,7 @@
 			<tr>
 				<td><?php echo $row->user_id ?></td>
 				<td><?php echo $row->name ?></td>
-				<td><?php echo $row->username ?></td>
-				<td></td>
+				<td><?php echo $row->username ?></td> 
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
@@ -101,14 +99,16 @@
 					<thead>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Username</th> 
+						<th>Username</th>
+						<th>Action</th>
 					</thead>
 					<tbody>
 						<?php foreach ($users as $user): ?>
 							<tr>
 								<td><?php echo $user->id ?></td>
 								<td><?php echo $user->name ?></td>
-								<td><?php echo $user->username ?></td> 
+								<td><?php echo $user->username ?></td>
+								<td><button class="btn btn-success add-private-user-to-election" data-poll_id="<?php echo $election->id ?>" data-id="<?php echo $user->id ?>">Add</button></td>
 							</tr>
 
 						<?php endforeach; ?>
