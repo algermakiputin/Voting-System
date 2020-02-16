@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>Assets/css/responsive.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>Assets/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>Assets/css/basictable.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
 	<link href = "<?php echo base_url() ?>Assets/images/logo.png" rel="icon" type="image/gif">
 </head>
 <header>

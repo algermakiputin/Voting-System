@@ -165,7 +165,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel">Add Poll</h5>
+					        <h5 class="modal-title" id="exampleModalLabel">New Election</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -173,12 +173,19 @@
 					      <div class="modal-body">
 					        <form id="new_poll" name="new_poll"  accept-charset="utf-8" method="POST">
 					        	<div class="form-group">
-				                    <label for="username">Poll Name</label>
+				                    <label for="username">Election Name</label>
 				                    <input type="text" placeholder="Not more than 50 characters" class="form-control form-control-lg rounded-1" name="poll_name" id="poll_name" required="">
 				                </div>
 				                <div class="form-group">
 				                    <label for="username">Tag Line</label>
 				                    <textarea rows="5" class="form-control form-control-lg rounded-1" name="tag_line" id="tag_line" required="" placeholder="Not more than 150 characters" ></textarea>
+				                </div>
+				                <div class="form-group">
+				                	<label>Private</label>
+				                	<select class="form-control" name="private" id="private">
+				                		<option value="0">No</option>
+				                		<option value="1">Yes</option>
+				                	</select>
 				                </div>
 				                <div class="form-group">
 				                	<table>

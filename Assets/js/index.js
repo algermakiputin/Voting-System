@@ -13,6 +13,45 @@ $(document).ready(function() {
 		});
 	}
 	activeMenu();
+
+	$("body").on('click', "#user-selection", function() {
+		
+		$("#add-private-user-modal").modal('toggle');
+	});
+
+	$("body").on('click', '.add-private-user-to-election', function() {
+
+		var id = $(this).data('id');
+		var poll_id = $(this).data('poll_id');
+		var row = $(this).parents("tr");
+
+		$.ajax({
+			type: "POST",
+			url: base_url + '/PollController/insert_private_user',
+			data: {
+				id: id,
+				poll_id: poll_id
+			},
+			success: function(data) {
+				
+				var id = row.find('td').eq(0).text();
+				var name = row.find('td').eq(1).text();
+				var username = row.find('td').eq(2).text();
+
+				$("#allowed_users tbody").append("<tr>"+
+						"<td>"+id+"</td>" +
+						"<td>"+name+"</td>" +
+						"<td>"+username+"</td>" +
+					"</tr>")
+
+				row.remove();
+
+			},
+			error: function(data) {
+				alert("Opps something went wrong please try again later..");
+			}
+		})
+	})
 	
 	$("#import-csv").click(function(){
 		$('#main').empty();
@@ -524,6 +563,7 @@ $(document).ready(function() {
 			var start_time = $("#start-time").val();
 			var end_time = $("#end-time").val();
 			var groups = $('#groups input[name="group"]');
+			var private = $("#private").val();
 			
 			for ( i = 0; i < groups.length; i++) {
 
@@ -560,7 +600,8 @@ $(document).ready(function() {
 						'groups' : groupsValue,
 						'choices' : choiceValue,
 						'end_time' : end_time,
-						'start_time' : start_time
+						'start_time' : start_time,
+						'private': private
 					},
 					beforeSend : function () {
 

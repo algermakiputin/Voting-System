@@ -161,267 +161,81 @@ class PollController extends CI_Controller {
 
 		<?php
 	}
-
-
+ 
 	function status ($num) {
 
-		$alphabet = array('A','B','C','D','E','F','G','H','I','J','k','L','M','N','O',
-			'P','Q','R','S','T','U','V','W','X','Y','Z');
-
-		$group_data = array();
-		$choices_name = array();
-		$output = "";
-		$usersVoted = array();
-		$table = "";
 		$this->load->model('PollModel');
 		$this->load->model('VotesModel');
-		if (!$this->session->userdata('staff')) {
-			echo "<style>.tableexport-caption {display:none !important;}</style>";
-		}
-		$poll = $this->PollModel->getPoll($num);
 
-		$output = "<div class='poll' id='status'>";
+		$data = [];
+		$election = $this->db->where('id', $num)->get('poll')->row();
+		$positions = $this->db->where('poll_id', $election->id)->get('poll_group_items')->result();
+		$allowed_users = $this->db->select('private_allowed_users.user_id, users.name, users.username')
+											->from('private_allowed_users')
+											->join('users', 'users.id = private_allowed_users.user_id')
+											->get()
+											->result();
 
-		$poll_data = array(
-			'name' => $poll[0]->name,
-			'id' => $poll[0]->id,
-			'tag_line' => $poll[0]->tag_line,
-			'start_time' => $poll[0]->start_time,
-			'end_time' => $poll[0]->end_time,
-			'publish' => $poll[0]->publish
-		);
-		$start_time =  date_format(date_create($poll_data['start_time']),'M d Y');
-		$end_time = date_format(date_create($poll_data['end_time']), 'M d Y');
-		$poll_group_items = $this->PollModel->getPollGroup($poll_data['id']);
-		$votes = $this->VotesModel->countVote($poll_data['id']);
-
-		$today = date("Y-m-d");
-		$today_time = strtotime($today);
-		$end_date = strtotime($end_time);
-		$ongoing = false;
-		$status_message = "Ongoing";
-
-		$status = "";
- 		if ($end_date > $today_time) {
-			$status = "- Initial Voting Results";
-			$ongoing = true;
-			
-		}else {
-			$status = "- Final Result";
-			$status_message = 'Ended';
-
-		}
-		
-		$allVotes = $this->VotesModel->countAllPollVotes($poll_data['id']);
-
-
-		
-		foreach ($allVotes as $allvote) {
-			$name = $this->VotesModel->getUserNames($allvote['user_id']);
-			if ($name)
-				array_push($usersVoted, $name[0]->name);
-		}
-
-		$baseUrl = base_url();
-
-		$output = "<div class='poll' id='results-view'>";
-		$output .= "<div class='prev'>";
-		$output .= "<a class='previous btn btn'>&laquo; Back to homepage</a>";
-		$output .= "</div>";
-		$output .= "<div class='poll-content'>";
-		$output .= "<div class='poll-box'>";
-		$output .= "<div class='poll-name'> $poll_data[name] $status</div>";
-
-		$output .= "<div class='poll-description'>$poll_data[tag_line] </div>";
-			$output .= "<div class='votes'><span class=''>Status: $status_message</span></div> ";
-		$output .= "<div class='votes'><span class=''>$votes people voted</span><br> ";
  
+		$users = [];
 
-		$output .= "
-		<div class='poll-time'>
-			<span class=''>
-				 From: $start_time
-			</span> To <span class=''>
-				  $end_time
-			</span>
-		</div>
+		if ($election->private) {
 
-		";
-		$output .= "</div>";
-		$output .= "</div>";
-	
-		$table .= "<table id='results-table' >";
-		foreach ($poll_group_items as $group_items) {
-			
-			array_push($choices_name, $group_items->id);
+			$query = "SELECT * FROM users
+							WHERE (users.id) NOT IN 
+							( 
+								SELECT user_id 
+								FROM private_allowed_users
+								WHERE poll_id = '$election->id'
+							)
 
-			$output .= "<div class=' choice-title'><h3 class='mx-auto'> $group_items->name </h3></div>";
-			$output .= "<div class='choices'>";
 
-			
-			$table .= "<tr>
-				<th>$group_items->name</th>
-			</tr>";
-			
-			$choices = $this->PollModel->getGroupChoices($group_items->id);
-		
-			$i = 0;
-			foreach ($choices as $choice) {
+						";
 
-				$choice_votes = $this->VotesModel->countChoiceVotes($choice['id']);
-				array_push($choices[$i], $choice_votes);
-				
-				$i++;
-			}
+			$users = $this->db->query($query)->result();
 
-			usort($choices, function ($item1, $item2) {
-			    return $item2['0'] <=> $item1['0'];
-			});
-			
-			$total_votes = 0;
-			foreach( $choices as $choice) {
-				$total_votes += $choice[0];
 
-			}
-
-			$count = 0;
-			foreach ($choices as $choice) {
-				
-			 
-				$table .= "
-					<tr>
-						<td>$choice[name]</td>
-						<td>$choice[0] Votes</td>
-					</tr>
-				
-				";
-				$col1 = 5;
-				$col2 = 5;
-				if (!$this->session->userdata('staff') && $ongoing == true) {
-					$col1 = 3;
-					$col2 = 7;
-				} 
-				$output .= "
-				<div class='row choice-row '>
-
-					<div class='col-md-$col1 vertical-align '>
-						<div class='img-wrapper  vertical-align' >
-
-							";
-
-						if (!$this->session->userdata('staff') && $ongoing == true) {
-							$output .= "<img id='avatar$choice[id]' src='https://qtxasset.com/styles/author_medium/s3fs/field/image/blank%20silhouette_21.png?gNGXuJyf7YYOaHgfhlBb6NUXFTTnx6t7&itok=0GJ7nzu_'>";
-						}else {
-							if ($choice['avatar']) {
-							$output .= "<img id='avatar$choice[id]' src='$baseUrl/uploads/$choice[avatar]'>";
-							}else {
-								$output .= "<img id='avatar$choice[id]' src='$baseUrl/Assets/images/default.png'>";
-							}
-						}
-						
-				if ($choice && $total_votes) {
-					$percentage = floor(($choice[0] / $total_votes) * 100);
-				}else {
-					$percentage = 0;
-				}
-				
-				if (!$this->session->userdata('staff') && $ongoing == true) {
-					$choice['name'] = $alphabet[$count];
-				}
-
-				$count++;
-				$output .=	"</div>
-						<span class='choice-name'>
-							&nbsp;$choice[name] 
-
-						</span>  
-						
-					</div>
-					
-						
-				";	
-			 
-
-				$output .= "<div class='col-md-$col2 vertical-align'>";
-				if ($poll_data['publish'] && !$this->session->userdata('staff') && $ongoing == true) {
-					$output .= "<span class='votes-bar'>
-						 <span class='vote-percentage' style ='width:$percentage%'></span>
-						 <div class='num_percentage'>$percentage%</span>
-						</div>";
-					 
-				}
-				$output .= "</div>";
-
-				if (!$choice[0]) {
-					$output .= "
-						<div class='col-md-2 vertical-align '>
-							<p class='mx-auto'>0 Vote</p>
-						</div>
-					";
-				}else if ($choice[0] == 1) {
-					$output .= "
-					<div class='col-md-2 vertical-align '>
-							<p class='mx-auto'>$choice[0] Vote</p>
-					</div>
-					";
-				}else {
-					$output .= "
-					<div class='col-md-2 vertical-align '>
-							<p class='mx-auto'>$choice[0] Votes</p>
-						</div>
-					";
-				}
-
-				
-
-				if ($this->session->userdata('staff') && !$poll_data['publish']) {
-					$output .= "
-				
-						<div class='col-md-12'>
-							<button class='btn btn-info upload-avatar border-0' data-toggle='collapse' href='#collapse$choice[id]' aria-expanded='false' aria-controls='collapseExample'>
-						    	Upload Avatar
-						  	</button>
-						</div>
-
-					";
-					$output .= "
-					
-					<div class='collapse' id='collapse$choice[id]'>
-						<div class='col-md-12'>
-							<form enctype='multipart/form-data' id='$choice[id]' name='upload_image' class='upload_form'>
-								<div >
-									<input type='file' class='image_file' name='image_file' id='$choice[id]'></input>
-									<input type='submit' value='Upload' ></input>
-								</div>
-								
-							</form>
-						</div>
-						</div>
-					";
-					?>
-				
-
-					<?php
-				}
-
-				$output .= "</div>";
-				$i++;
-
-				
-			}
-
-			$table .= "<tr><td></td></tr>";
-			$output .= "</div>";
-	
 		}
-
-		$output .= "</div>";
-		$output .= "</div>";
-
-		$table .= "</table>";
-		echo $output;
-		echo $table;
 		
+		foreach ($positions as $position) {
+
+			$candidates = $this->db->select('group_choices.*')
+											->from('group_choices') 
+											->where('group_choices.group_id', $position->id)
+											->get()
+											->result();
+
+			foreach ($candidates as $candidate) {
+
+				$candidate->votes = $this->db->where('choice_votes.choice_id', $candidate->id)
+														->get('choice_votes')
+														->num_rows();
+			}
+ 
+			$position->candidates = $candidates;
+		}
+		  
+
+		$data['users'] = $users;
+		$data['election'] = $election;
+		$data['election_status'] = strtotime($election->start_time) > strtotime($election->end_time) ? "Ended" : "Ongoing";
+		$data['votes'] = $this->VotesModel->countVote($election->id);
+		$data['positions'] = $positions;
+		$data['allowed_users'] = $allowed_users;
+
+		echo $this->load->view('poll/single_poll_view', $data, true);
+		
+	}
+
+	public function insert_private_user() {
+
+		$id = $this->input->post('id');
+		$poll_id = $this->input->post('poll_id');
+
+		$this->db->insert('private_allowed_users', [
+				'user_id' => $id,
+				'poll_id' => $poll_id
+			]);
 	}
 
 	function sortByVote($a, $b)
@@ -488,9 +302,10 @@ class PollController extends CI_Controller {
 		$choices = $this->input->post('choices');
 		$start_time = $this->input->post('start_time');
 		$end_time = $this->input->post('end_time');
+		$private = $this->input->post('private');
 		$currentGroupID = array();
 
-		$currentID = $this->PollModel->insertPoll($poll_name, $tag_line, $start_time, $end_time);
+		$currentID = $this->PollModel->insertPoll($poll_name, $tag_line, $start_time, $end_time, $private);
 
 	 
 		$currentGroupID = $this->PollModel->insertGroups($groups, $currentID);

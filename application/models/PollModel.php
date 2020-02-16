@@ -83,13 +83,14 @@ class PollModel extends CI_Model {
 		return $this->db->insert_id();
 	}
 
-	function insertPoll($poll_name, $tag_line, $start, $end) {
+	function insertPoll($poll_name, $tag_line, $start, $end, $private){
 		$data = array (
 			'name' => $poll_name,
 			'start_time' => $start,
 			'end_time' => $end,
 			'tag_line' => $tag_line,
-			'publish' => 0
+			'publish' => 0,
+			'private' => $private
 		);
 
 		if ($this->db->insert('poll', $data)) {
