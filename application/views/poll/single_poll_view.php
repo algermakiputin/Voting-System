@@ -26,26 +26,35 @@
 		</div>
 	</div> 
 
-	<table id='results-table' >
+ 
 		<?php foreach ($positions as $position) : ?>
 			<div class=' choice-title'><h3 class='mx-auto'> <?php echo $position->name ?> </h3></div>
 			<div class='choices'>
-				<tr>
-					<th><?php echo $position->name ?></th>
-				</tr>
+			 
 
 				<?php foreach ($position->candidates as $candidate): ?>
 					<div class="row choice-row">
 
-						<div class="col-md-5 vertical-align ">
+						<div class="col-md-5 vertical-align "> 
+							<?php if (!$candidate->avatar): ?>
 							<div class="img-wrapper  vertical-align"> 
-								<img id="avatar62" src="http://localhost/poll//Assets/images/default.png"></div>
+								<img id="avatar<?php echo $candidate->id ?>" src="<?php echo base_url('Assets/images/default.png') ?>"></div>
 								<span class="choice-name">
 									&nbsp; <?php echo $candidate->name; ?>
 
 								</span>  
 
 							</div> 
+							<?php else: ?>
+								<div class="img-wrapper  vertical-align"> 
+								<img id="avatar<?php echo $candidate->id ?>" src="<?php echo base_url('uploads/' . $candidate->avatar) ?>"></div>
+									<span class="choice-name">
+										&nbsp; <?php echo $candidate->name; ?>
+
+									</span>  
+
+								</div>
+							<?php endif; ?>
 							<div class="col-md-5 vertical-align"></div>
 							<div class="col-md-2 vertical-align ">
 								<?php if ($this->session->userdata('staff')): ?>
@@ -54,12 +63,32 @@
 									TBA
 								<?php endif; ?>
 							</div>
-						</div>
+
+							<?php if ($this->session->userdata('staff') && !$election->publish ) ?>
+							<div class='col-md-12'>
+								<button class='btn btn-info upload-avatar border-0' data-toggle='collapse' href='#collapse<?php echo $candidate->id ?>' aria-expanded='false' aria-controls='collapseExample'>
+							    	Upload Avatar
+							  	</button>
+							</div>
+							<div class='collapse' id='collapse<?php echo $candidate->id ?>'>
+								<div class='col-md-12'>
+									<form enctype='multipart/form-data' id='<?php echo $candidate->id ?>' name='upload_image' class='upload_form'>
+										<div >
+											<input type='file' class='image_file' name='image_file' id='<?php echo $candidate->id ?>'></input>
+											<input type='submit' value='Upload' ></input>
+										</div>
+										
+									</form>
+								</div>
+							</div>
+							 
+					</div>
+						
 					<?php endforeach; ?>
 				</div>
 
 			<?php endforeach; ?>
-		</table> 
+ 
 	</div>
 
 <?php if ( $election->private && $this->session->userdata('staff') ): ?>

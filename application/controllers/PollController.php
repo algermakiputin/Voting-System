@@ -140,23 +140,21 @@ class PollController extends CI_Controller {
         $config['file_name'] = $newName;
        	$this->load->library('upload', $config);
    
-    	if (isset($_FILES['image_file'])) {
+    	if (isset($_FILES['image_file'])) { 
 
-    		
-
-           	if ( ! $this->upload->do_upload('image_file'))
-            {
-                    
-            }
-            else
-            {
-            	
-            	$data = $this->upload->data();
-            	$this->load->model('PollModel');
-            	$this->PollModel->updateImage($choice_id, $newName);
-            	echo $newName;
- 			
-            }
+        	if ( ! $this->upload->do_upload('image_file'))
+         {
+                 
+         }
+         else
+         {
+         	
+         	$data = $this->upload->data();
+         	$this->load->model('PollModel');
+         	$this->PollModel->updateImage($choice_id, $newName);
+         	echo $newName;
+			
+         }
     	}
     }
 
