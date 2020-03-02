@@ -753,12 +753,12 @@ $(document).ready(function() {
 		            contentType : false,
 		            processData : false,
 		            success : function(data) {
-		           		alert(data);
+		           	 
 		                $("#" + id).append("<p class='text-success'>Image Uploaded Successfully</p>"); 
 		                $("#" + id)[0].reset();   
-		                alert(id)
+		            
 		                var image_url = base_url + '/uploads/' + data;
-		                alert(image_url);
+		            
 		                $("#avatar" + id).attr('src', base_url + "/uploads/" + data);      
 		            }
 		        });

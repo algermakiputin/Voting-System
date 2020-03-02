@@ -1,19 +1,14 @@
 <div class='poll'>
-
-	<?php if ($this->session->userdata('staff')): ?>
+ 
 		<div class='prev'>
 			<a class='previous btn btn'>&laquo; Back to homepage</a>
 		</div>
 		<form id='poll-form' method='POST'>
 		<div class='poll-content'>
 			<div class='poll-box'>
-				<div class='poll-name '> <?php echo $election->name ?></div>
+				<div class='poll-name ' style="font-size: 32px"> <?php echo $election->name ?></div>
 				<div class=' poll-description'><?php echo $election->tag_line ?></div>
-			</div> 
-
-				<?php else: ?> 
-					<h3 class='' style='padding:50px 15px'><?php echo $election->name ?></h3>
-				<?php endif; ?>
+			</div>  
 
 				<?php foreach ($positions as $position): ?>
 					<div class=' choice-title'><h3 ><?php echo $position->name ?> </h3></div>

@@ -64,7 +64,7 @@
 								<?php endif; ?>
 							</div>
 
-							<?php if ($this->session->userdata('staff') && !$election->publish ) ?>
+							<?php if ($this->session->userdata('staff') && !$election->publish ): ?>
 							<div class='col-md-12'>
 								<button class='btn btn-info upload-avatar border-0' data-toggle='collapse' href='#collapse<?php echo $candidate->id ?>' aria-expanded='false' aria-controls='collapseExample'>
 							    	Upload Avatar
@@ -81,7 +81,7 @@
 									</form>
 								</div>
 							</div>
-							 
+							<?php endif; ?>
 					</div>
 						
 					<?php endforeach; ?>
